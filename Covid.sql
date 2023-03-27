@@ -9,9 +9,9 @@ Select *
   Where continent Is Not Null
   Order By 3, 4
 
--- Select *
---   From CovidVaccinations
---   Order By 3, 4
+ Select *
+   From CovidVaccinations
+   Order By 3, 4
 
 
 -- Select data that's going to be used
@@ -57,12 +57,13 @@ Select location, Max(Cast(total_deaths As Int)) As TotalDeathCount
 -- BREAKING DOWN BY CONTINENT
 
 -- Add to visuals
--- Select location, Max(Cast(total_deaths As Int)) As TotalDeathCount
---   From CovidDeaths
---   -- Where location Like '%states%'
---   Where continent Is Null
---   Group By location
---   Order By TotalDeathCount desc
+ Select location, Max(Cast(total_deaths As Int)) As TotalDeathCount
+   From CovidDeaths
+   Where location Like '%states%'
+   And
+   Where continent Is Null
+   Group By location
+   Order By TotalDeathCount desc
 
 
 -- Continents with the highest death count
@@ -96,7 +97,6 @@ Select *
 -- Total population vs vaccinations
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, Sum(Cast(vac.new_vaccinations As Float)) Over (Partition By dea.location Order By dea.location, dea.date) As RollingPeopleVaccinated
---, (RollingPeopleVaccinated / population) * 100
   From CovidDeaths dea
   Join CovidVaccinations vac
   On dea.location = vac.location
